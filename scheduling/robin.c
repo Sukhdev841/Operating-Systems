@@ -6,8 +6,12 @@ void round_robin(int *at,int *bt,int time_quantum,int n)
 	int time = 0,j;
 	int remain = n;
 	int *wt = (int*)(malloc(sizeof(int)*n));
+	int *lt = (int*)(malloc(sizeof(int)*n));
 	for(j=0;j<n;j++)
+	{
+		lt[j] = at[j];
 		wt[j]=0;
+	}
 
 	while(remain>0)
 	{
@@ -19,15 +23,15 @@ void round_robin(int *at,int *bt,int time_quantum,int n)
 				if(bt[i] >= time_quantum)
 				{
 					bt[i] -= time_quantum;
-					wt[i] += time - at[i];
-					at[i] = time + time_quantum;
+					wt[i] += time - lt[i];
+					lt[i] = time + time_quantum;
 					time += time_quantum;
 				}
 				else if(bt[i] < time_quantum)
 				{
-					wt[i] += time - at[i];
+					wt[i] += time - lt[i];
 					time = time + bt[i];
-					at[i] = time;
+					lt[i] = time;
 					bt[i] = 0;
 				}
 				if(bt[i]<=0)
